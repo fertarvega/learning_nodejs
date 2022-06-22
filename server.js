@@ -9,32 +9,32 @@ const post = require('./Models/posts');
 const student = require('./Models/posts');
 const routerPost = require('./Routes/post.js');
 
-mongoose.connect('mongodb://localhost:27017/apiexample').then(() => {
-    console.log("Connected to database");
-}).catch(() => {
-    console.log("Failed to connect to database");
-});
+// mongoose.connect('mongodb://localhost:27017/apiexample').then(() => {
+//     console.log("Connected to database");
+// }).catch(() => {
+//     console.log("Failed to connect to database");
+// });
 const port = 8080;
-const protectedRoute = express.Router();
-app.set('key', 'secret');
+// const protectedRoute = express.Router();
+// app.set('key', 'secret');
 
 const old_variable = "Old variable";
 
-protectedRoute.use((req, res, next) => {
-    const token = req.headers["access-token"];
-    if(token){
-        jwt.verify(token, app.get('key'), (err, decoded) => {
-            if(err){
-                return res.send({'msg' : 'invalid token'});
-            } else {
-                req.decoded = decoded;
-                next();
-            }
-        });
-    } else {
-        res.send({'msg' : 'Token not provided'});
-    }
-});
+// protectedRoute.use((req, res, next) => {
+//     const token = req.headers["access-token"];
+//     if(token){
+//         jwt.verify(token, app.get('key'), (err, decoded) => {
+//             if(err){
+//                 return res.send({'msg' : 'invalid token'});
+//             } else {
+//                 req.decoded = decoded;
+//                 next();
+//             }
+//         });
+//     } else {
+//         res.send({'msg' : 'Token not provided'});
+//     }
+// });
 
 app.use(express.json()); //Outputs are in json with this
 
@@ -56,11 +56,31 @@ app.use('/api', routerPost);
 app.get('/api/get/withouttoken', function (req, res) {
     res.send({
         msg : 'Hello',
-        content : 'This is a test msg'
+        content : 'This is a list of users',
+        value: [{
+            name: "Fernando Tarango",
+            age: "21",
+        },
+        {
+            name: "Brayan Prieto",
+            age: "20",
+        },{
+            name: "Edgar Rivas",
+            age: "20",
+        },{
+            name: "Gabriela Rojas",
+            age: "21",
+        }, {
+            name: "Michell Sosa",
+            age: "21",
+        },{
+            name: "Paulina Torres",
+            age: "21",
+        }]
     });
 });
 
-app.get('/api/get/withtoken', protectedRoute, function (req, res) {
+app.get('/api/get/withtoken', function (req, res) {
     res.send({
         msg : 'Hello',
         content : 'This is a test msg'
